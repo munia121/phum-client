@@ -1,12 +1,15 @@
-import React from 'react';
-import { UploadOutlined, UserOutlined, VideoCameraOutlined } from '@ant-design/icons';
-import { Layout, Menu, MenuProps } from 'antd';
-import { NavLink, Outlet } from 'react-router-dom';
-import { adminPaths, } from '../../routes/admin.routes';
-import { sidebarItemsGenerators } from '../../utils/sidebarItemsGenerators';
+// import React from 'react';
+// import { UploadOutlined, UserOutlined, VideoCameraOutlined } from '@ant-design/icons';
+// import { adminPaths, } from '../../routes/admin.routes';
+// import { sidebarItemsGenerators } from '../../utils/sidebarItemsGenerators';
+import { Button, Layout, } from 'antd';
+import {  Outlet } from 'react-router-dom';
 import Sidebar from './Sidebar';
+import { useAppDispatch } from '../../redux/hooks';
+import { logout } from '../../redux/featurs/auth/authSlice';
 
-const { Header, Content, Footer, } = Layout;
+
+const { Header, Content } = Layout;
 
 // const items: MenuProps['items'] = [
 //     {
@@ -33,12 +36,21 @@ const { Header, Content, Footer, } = Layout;
 //     }
 // ]
 
-const MainLayOut = () => {
+const MainLayOut = () =>{
+
+    const dispatch =useAppDispatch() 
+
+    const handleLogout = () => {
+        dispatch(logout())
+    }
+
     return (
         <Layout style={{ height: '100vh' }}>
            <Sidebar></Sidebar>
             <Layout>
-                <Header style={{ padding: 0, }} />
+                <Header>
+                    <Button onClick={handleLogout}>Logout</Button>{""}
+                </Header>
                 <Content style={{ margin: '24px 16px 0' }}>
                     <div
                         style={{
@@ -50,9 +62,7 @@ const MainLayOut = () => {
                         <Outlet></Outlet>
                     </div>
                 </Content>
-                <Footer style={{ textAlign: 'center' }}>
-                    Ant Design ©{new Date().getFullYear()} Created by Ant UED
-                </Footer>
+               
             </Layout>
         </Layout>
     );
