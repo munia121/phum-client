@@ -1,13 +1,15 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { FieldValues, SubmitHandler } from "react-hook-form";
-import PHForm from "../../../component/Form/PHForm";
+
 import { Button, Col, Flex } from "antd";
-import PHSelect from "../../../component/Form/PHSelect";
+
 import { monthOptions } from "../../../component/constans/global";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {z} from 'zod'
 import { toast } from "sonner";
 import { useAddAcademicSemesterMutation } from "../../../redux/featurs/admin/acdamicManagementApi";
+import PHForm from "../../../component/form/PHForm";
+import PHSelect from "../../../component/form/PHSelect";
 import { TResponse } from "../../../types/global";
 
 

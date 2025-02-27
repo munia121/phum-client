@@ -1,12 +1,15 @@
 import { Button, Col, Divider, Form, Input, Row } from "antd";
 import PHForm from "../../../component/Form/PHForm";
-import PHInput from "../../../component/Form/PHInput";
+
 import { Controller, FieldValues, SubmitHandler } from "react-hook-form";
 import PHSelect from "../../../component/Form/PHSelect";
 import { bloodGroupOptions, genderOptions } from "../../../component/constans/global";
-import PHDatePicker from "../../../component/Form/PHDatePicker";
+
 import { useGetAcademicFacultiesQuery, useGetAllSemesterQuery } from "../../../redux/featurs/admin/acdamicManagementApi";
 import { useAddStudentMutation } from "../../../redux/featurs/admin/userManagement.api";
+
+import PHDatePicker from "../../../component/form/PHDatePicker";
+import PHInput from "../../../component/form/PHInput";
 
 const studentDummyData = {
     password: 'student123',
@@ -78,9 +81,9 @@ const studentDefaultValues = {
             address: "Mirpur, Dhaka"
         },
         profileImage: "https://example.com/profile.jpg",
-        admissionSemister: "67b42aaa02786c18b4506e34",
-        academicDepartment: "67a8bd46881319b248ec68fc",
-        academicFaculty: "67a8bca1881319b248ec68f8",
+        admissionSemister: "67bbf27602eb0a5c2ef7b899",
+        academicDepartment: "67bbf31e41800d239f648190",
+        academicFaculty: "67bbf3f041800d239f648195",
         isDeleted: false
 
 }

@@ -1,0 +1,140 @@
+import { Button, Dropdown, Table, TableColumnsType, Tag } from 'antd';
+
+import { useState } from 'react';
+import { TSemester } from '../../../types/courseManagement.type';
+import { useGetAllRegisteredSemesterQuery, useUpdateRegisteredSemesterMutation, } from '../../../redux/featurs/admin/courseManagementApi';
+import moment from 'moment';
+export type TTableData = Pick<TSemester, 'startDate' | 'endDate' | 'status'>;
+
+const items = [
+  {
+    label: 'Upcoming',
+    key: 'UPCOMING',
+  },
+  {
+    label: 'Ongoing',
+    key: 'ONGOING',
+  },
+  {
+    label: 'Ended',
+    key: 'ENDED',
+  },
+];
+
+const RegisteredSemesters = () => {
+  // const [params, setParams] = useState<TQueryParam[] | undefined>(undefined);
+  const [semesterId, setSemesterId] = useState('');
+  const { data: semesterData, isFetching } =
+    useGetAllRegisteredSemesterQuery(undefined);
+
+    // console.log(semesterData)
+    // console.log(semesterId)
+
+  const [updateSemesterStatus] = useUpdateRegisteredSemesterMutation();
+
+
+  
+
+  const tableData = semesterData?.data?.map(
+    ({ _id, academicSemister, startDate, endDate, status }) => ({
+      key: _id,
+      name: `${academicSemister.name} ${academicSemister.year}`,
+      startDate: moment(new Date(startDate)).format('MMMM'),
+      endDate: moment(new Date(endDate)).format('MMMM'),
+      status,
+    })
+  );
+
+
+
+
+  const handleStatusUpdate =async (data) => {
+    // console.log('dddddd',data)
+    const updateData = {
+      id: semesterId,
+      data: {
+        status: data.key,
+        // academicSemister: academicSemister
+      },
+    };
+    // console.log('updatedata',updateData)
+
+    await updateSemesterStatus(updateData);
+  };
+
+  const menuProps = {
+    items,
+    onClick: handleStatusUpdate,
+  };
+
+  const columns: TableColumnsType<TTableData> = [
+    {
+      title: 'Name',
+      key: 'name',
+      dataIndex: 'name',
+    },
+    {
+      title: 'Status',
+      key: 'status',
+      dataIndex: 'status',
+      render: (item) => {
+        let color;
+        if (item === 'UPCOMING') {
+          color = 'blue';
+        }
+        if (item === 'ONGOING') {
+          color = 'green';
+        }
+        if (item === 'ENDED') {
+          color = 'red';
+        }
+
+        return <Tag color={color}>{item}</Tag>;
+      },
+    },
+    {
+      title: 'Start Date',
+      key: 'startDate',
+      dataIndex: 'startDate',
+    },
+    {
+      title: 'End Date',
+      key: 'endDate',
+      dataIndex: 'endDate',
+    },
+    {
+      title: 'Action',
+      key: 'x',
+      render: (item) => {
+        return (
+          <Dropdown menu={menuProps} trigger={['click']}>
+            <Button onClick={() => setSemesterId(item.key)}>Update</Button>
+          </Dropdown>
+        );
+      },
+    },
+  ];
+
+  // const onChange: TableProps<TTableData>['onChange'] = (
+  //   _pagination,
+  //   filters,
+  //   _sorter,
+  //   extra
+  // ) => {
+  //   if (extra.action === 'filter') {
+  //     const queryParams: TQueryParam[] = [];
+  //     setParams(queryParams);
+  //   }
+  // };
+
+  return (
+    <Table
+      loading={isFetching}
+      columns={columns}
+      dataSource={tableData}
+      // onChange={onChange}
+    />
+  );
+};
+
+export default RegisteredSemesters;

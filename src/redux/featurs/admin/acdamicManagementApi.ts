@@ -10,7 +10,7 @@ const academicManagementApi = baseApi.injectEndpoints({
 
                 
                 if(args){
-                    args.forEach(item => {
+                    args.forEach((item: { name: string; value: string; }) => {
                         params.append(item.name,item.value )
                         
                     });
